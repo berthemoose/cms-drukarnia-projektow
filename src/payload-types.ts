@@ -11,6 +11,7 @@ export interface Config {
     users: User;
     media: Media;
     products: Product;
+    'no-store-products': NoStoreProduct;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -23,6 +24,8 @@ export interface Config {
     appSettings: AppSetting;
     aboutPage: AboutPage;
     contactPage: ContactPage;
+    thesis: Thesis;
+    deliveryOptions: DeliveryOption;
   };
 }
 /**
@@ -102,6 +105,63 @@ export interface Media {
  * via the `definition` "products".
  */
 export interface Product {
+  id: string;
+  slug?: string | null;
+  productInfo: {
+    productImage: string | Media;
+    productName: string;
+    productShortDescription: string;
+    basePrice: number;
+    productLongDescription?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    productLongDescriptionHTML?: string | null;
+  };
+  productSpecs?:
+    | {
+        specName: string;
+        specDisplayName: string;
+        specDesc: string;
+        specValues: {
+          name: string;
+          desc: string;
+          priceModifier?: number | null;
+          priceMultiplier?: number | null;
+          conditionalModifiers?:
+            | {
+                dependsOn: string;
+                whenValue: string;
+                priceModifier?: number | null;
+                priceMultiplier?: number | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "no-store-products".
+ */
+export interface NoStoreProduct {
   id: string;
   slug?: string | null;
   productInfo: {
@@ -201,6 +261,48 @@ export interface Header {
       }[]
     | null;
   contactUsAddress: string;
+  headerLinks?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: string | null;
+          url?: string | null;
+          label: string;
+          isDisabled?: boolean | null;
+          isHidden?: boolean | null;
+          appearance?: ('default' | 'simple-button' | 'special-button') | null;
+          size?: ('xs' | 'sm' | 'md' | 'lg' | 'xl') | null;
+          color?: ('black' | 'primary' | 'white') | null;
+          variant?: ('solid' | 'outline' | 'soft' | 'ghost') | null;
+          icon?: string | null;
+          iconPosition?: ('left' | 'right') | null;
+          iconMovementDirection?: ('down' | 'up' | 'right' | 'left') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  headerLinksRightSide?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: string | null;
+          url?: string | null;
+          label: string;
+          isDisabled?: boolean | null;
+          isHidden?: boolean | null;
+          appearance?: ('default' | 'simple-button' | 'special-button') | null;
+          size?: ('xs' | 'sm' | 'md' | 'lg' | 'xl') | null;
+          color?: ('black' | 'primary' | 'white') | null;
+          variant?: ('solid' | 'outline' | 'soft' | 'ghost') | null;
+          icon?: string | null;
+          iconPosition?: ('left' | 'right') | null;
+          iconMovementDirection?: ('down' | 'up' | 'right' | 'left') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -290,44 +392,237 @@ export interface Regulamin {
  */
 export interface LandingPage {
   id: string;
+  heroBadge: {
+    text: string;
+    icon?: string | null;
+    variant: 'transparent' | 'white';
+  };
   landingHero: string;
-  servicesHeader: {
-    topLabel?: string | null;
+  landingHeroLinks?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: string | null;
+          url?: string | null;
+          label: string;
+          isDisabled?: boolean | null;
+          isHidden?: boolean | null;
+          appearance?: ('default' | 'simple-button' | 'special-button') | null;
+          size?: ('xs' | 'sm' | 'md' | 'lg' | 'xl') | null;
+          color?: ('black' | 'primary' | 'white') | null;
+          variant?: ('solid' | 'outline' | 'soft' | 'ghost') | null;
+          icon?: string | null;
+          iconPosition?: ('left' | 'right') | null;
+          iconMovementDirection?: ('down' | 'up' | 'right' | 'left') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  servicesBadge: {
+    text: string;
+    icon?: string | null;
+    variant: 'transparent' | 'white';
+  };
+  servicesText: {
     header: string;
-    strong: string;
+    paragraph: string;
+    topLabel?: string | null;
+    ctaHeader: string;
+    ctaParagraph: string;
     id?: string | null;
   }[];
   servicesSections: {
-    serviceImg: string | Media;
+    mediaType: 'image' | 'icon';
+    serviceImg?: string | Media | null;
+    iconId?: string | null;
     sectionHeader?: string | null;
     sectionParagraph?: string | null;
+    link: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?: string | null;
+      url?: string | null;
+      label: string;
+      isDisabled?: boolean | null;
+      isHidden?: boolean | null;
+      appearance?: ('default' | 'simple-button' | 'special-button') | null;
+      size?: ('xs' | 'sm' | 'md' | 'lg' | 'xl') | null;
+      color?: ('black' | 'primary' | 'white') | null;
+      variant?: ('solid' | 'outline' | 'soft' | 'ghost') | null;
+      icon?: string | null;
+      iconPosition?: ('left' | 'right') | null;
+      iconMovementDirection?: ('down' | 'up' | 'right' | 'left') | null;
+    };
     id?: string | null;
   }[];
-  trustedUs: {
-    header: string;
-    link: string;
-    logos: {
-      logo?: string | Media | null;
-      id?: string | null;
-    }[];
-    id?: string | null;
-  }[];
-  conversionTexts: {
+  servicesCtaBadge: {
+    text: string;
+    icon?: string | null;
+    variant: 'transparent' | 'white';
+  };
+  servicesLinks?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: string | null;
+          url?: string | null;
+          label: string;
+          isDisabled?: boolean | null;
+          isHidden?: boolean | null;
+          appearance?: ('default' | 'simple-button' | 'special-button') | null;
+          size?: ('xs' | 'sm' | 'md' | 'lg' | 'xl') | null;
+          color?: ('black' | 'primary' | 'white') | null;
+          variant?: ('solid' | 'outline' | 'soft' | 'ghost') | null;
+          icon?: string | null;
+          iconPosition?: ('left' | 'right') | null;
+          iconMovementDirection?: ('down' | 'up' | 'right' | 'left') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  trustedUsBadge: {
+    text: string;
+    icon?: string | null;
+    variant: 'transparent' | 'white';
+  };
+  zaufaliNamText: {
     header: string;
     paragraph: string;
-    id?: string | null;
-  }[];
-  opinionsTexts: {
-    header: string;
-    paragraph: string;
+    topLabel?: string | null;
     strong?: string | null;
     id?: string | null;
   }[];
-  mapTexts: {
+  zaufaliNamLogos?:
+    | {
+        logo: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  trustedUsLinks?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: string | null;
+          url?: string | null;
+          label: string;
+          isDisabled?: boolean | null;
+          isHidden?: boolean | null;
+          appearance?: ('default' | 'simple-button' | 'special-button') | null;
+          size?: ('xs' | 'sm' | 'md' | 'lg' | 'xl') | null;
+          color?: ('black' | 'primary' | 'white') | null;
+          variant?: ('solid' | 'outline' | 'soft' | 'ghost') | null;
+          icon?: string | null;
+          iconPosition?: ('left' | 'right') | null;
+          iconMovementDirection?: ('down' | 'up' | 'right' | 'left') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  conversionBadge: {
+    text: string;
+    icon?: string | null;
+    variant: 'transparent' | 'white';
+  };
+  konwersjaMarketingowaText: {
     header: string;
     paragraph: string;
+    topLabel?: string | null;
+    ctaParagraph: string;
     id?: string | null;
   }[];
+  conversionLinks?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: string | null;
+          url?: string | null;
+          label: string;
+          isDisabled?: boolean | null;
+          isHidden?: boolean | null;
+          appearance?: ('default' | 'simple-button' | 'special-button') | null;
+          size?: ('xs' | 'sm' | 'md' | 'lg' | 'xl') | null;
+          color?: ('black' | 'primary' | 'white') | null;
+          variant?: ('solid' | 'outline' | 'soft' | 'ghost') | null;
+          icon?: string | null;
+          iconPosition?: ('left' | 'right') | null;
+          iconMovementDirection?: ('down' | 'up' | 'right' | 'left') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  opinieKlientowText: {
+    header: string;
+    paragraph: string;
+    topLabel?: string | null;
+    strong?: string | null;
+    id?: string | null;
+  }[];
+  mapBadge: {
+    text: string;
+    icon?: string | null;
+    variant: 'transparent' | 'white';
+  };
+  mapaDojazduText: {
+    header: string;
+    paragraph: string;
+    topLabel?: string | null;
+    strong?: string | null;
+    id?: string | null;
+  }[];
+  thesisBadge: {
+    text: string;
+    icon?: string | null;
+    variant: 'transparent' | 'white';
+  };
+  pracaDyplomowaText: {
+    header: string;
+    paragraph: string;
+    topLabel?: string | null;
+    strong?: string | null;
+    specPoints?:
+      | {
+          specPoint?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    productBadge: string;
+    bottomSpecs: {
+      leftBottomSpec: {
+        leftBottomSpecText: string;
+        leftBottomSpecIcon?: string | null;
+      };
+      rightBottomSpec: {
+        rightBottomSpecText: string;
+        rightBottomSpecIcon?: string | null;
+      };
+    };
+    id?: string | null;
+  }[];
+  thesisButtons?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: string | null;
+          url?: string | null;
+          label: string;
+          isDisabled?: boolean | null;
+          isHidden?: boolean | null;
+          appearance?: 'thesis-button' | null;
+          size?: ('xs' | 'sm' | 'md' | 'lg' | 'xl') | null;
+          color?: ('black' | 'primary' | 'white') | null;
+          variant?: ('solid' | 'outline' | 'soft' | 'ghost') | null;
+          icon?: string | null;
+          iconPosition?: ('left' | 'right') | null;
+          iconMovementDirection?: ('down' | 'up' | 'right' | 'left') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -357,6 +652,19 @@ export interface AppSetting {
   orderEmails?:
     | {
         email: string;
+        id?: string | null;
+      }[]
+    | null;
+  pageList: {
+    pageName?: string | null;
+    pageSlug?: string | null;
+    id?: string | null;
+  }[];
+  availableDeliveryServices?:
+    | {
+        name: string;
+        displayName: string;
+        logo: string | Media;
         id?: string | null;
       }[]
     | null;
@@ -443,8 +751,78 @@ export interface ContactPage {
   updatedAt?: string | null;
   createdAt?: string | null;
 }
-
-
-declare module 'payload' {
-  export interface GeneratedTypes extends Config {}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "thesis".
+ */
+export interface Thesis {
+  id: string;
+  productInfo: {
+    productImage: string | Media;
+    productName: string;
+    productShortDescription: string;
+    basePrice: number;
+    productLongDescription?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    productLongDescriptionHTML?: string | null;
+  };
+  productSpecs?:
+    | {
+        specName: string;
+        specDisplayName: string;
+        specDesc: string;
+        specValues: {
+          name: string;
+          desc: string;
+          priceModifier?: number | null;
+          priceMultiplier?: number | null;
+          conditionalModifiers?:
+            | {
+                dependsOn: string;
+                whenValue: string;
+                priceModifier?: number | null;
+                priceMultiplier?: number | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
+      }[]
+    | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "deliveryOptions".
+ */
+export interface DeliveryOption {
+  id: string;
+  options?:
+    | {
+        name: string;
+        description: string;
+        price: number;
+        time?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+
