@@ -1,7 +1,7 @@
 FROM node:22-bookworm-slim AS base
 
 FROM base AS builder
-WORKDIR /home/node/app
+WORKDIR /app
 
 
 COPY package*.json ./
@@ -16,17 +16,13 @@ FROM base AS runtime
 ENV NODE_ENV=production
 ENV PAYLOAD_CONFIG_PATH=dist/payload.config.js
 
-WORKDIR /home/node/app
+WORKDIR /app
 
 COPY package*.json ./
 RUN npm install --omit=dev
 
-COPY --from=builder /home/node/app/dist ./dist
-COPY --from=builder /home/node/app/build ./build
-
-
-RUN echo "CONTENTS OF DIST:" && ls -R dist
-RUN echo "CONTENTS OF BUILD:" && ls -R build
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/build ./build
 
 EXPOSE 3000
 
