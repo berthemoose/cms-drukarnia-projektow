@@ -24,6 +24,10 @@ RUN npm install --omit=dev
 COPY --from=builder /home/node/app/dist ./dist
 COPY --from=builder /home/node/app/build ./build
 
+
+RUN echo "CONTENTS OF DIST:" && ls -R dist
+RUN echo "CONTENTS OF BUILD:" && ls -R build
+
 EXPOSE 3000
 
 CMD ["node", "dist/server.js"]
