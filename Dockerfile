@@ -1,12 +1,15 @@
-FROM node:18 AS base
+FROM node:22-bookworm-slim AS base
 
 FROM base AS builder
 WORKDIR /home/node/app
 
+
 COPY package*.json ./
+RUN npm install
+
+
 COPY . .
 
-RUN npm install
 RUN npm run build
 
 FROM base AS runtime
@@ -22,4 +25,5 @@ COPY --from=builder /home/node/app/dist ./dist
 COPY --from=builder /home/node/app/build ./build
 
 EXPOSE 3000
-CMD ["node", "dist/zzzzz.js"]
+
+CMD ["node", "dist/server.js"]
