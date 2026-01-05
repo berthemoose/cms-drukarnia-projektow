@@ -17,7 +17,7 @@ export const Header: GlobalConfig = {
   },
   access: {
     read: () => true,
-    update: ({ req }) => !!req.user,
+    update: () => true,
   },
   fields: [
     {
@@ -119,16 +119,16 @@ export const Header: GlobalConfig = {
           fields: [
             linkGroup(
               {
-                maxLinks: 6,
                 minLinks: 0,
+                maxLinks: 6,
                 name: "headerLinks",
                 label: "Linki w centrum nagłówka strony"
               }
             ),
             linkGroup(
-              { 
-                maxLinks: 6,
+              {
                 minLinks: 0,
+                maxLinks: 6,
                 name: "headerLinksRightSide",
                 label: "Linki w prawej części nagłówka strony",
               }
