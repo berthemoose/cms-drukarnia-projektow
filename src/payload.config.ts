@@ -42,6 +42,7 @@ export default buildConfig({
     }
   },
   csrf: csrfOrigins,
+  cors:'*',
   defaultDepth: 1,
   maxDepth: 5,
   editor: lexicalEditor({}),
