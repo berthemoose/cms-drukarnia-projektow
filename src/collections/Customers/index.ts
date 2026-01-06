@@ -23,7 +23,9 @@ export const Customers: CollectionConfig = {
     slug: "customers",
     access: {
         create: () => true,
-        update: selfOrAdmin,
+        read: () => true,
+        update: () => true,
+        delete: () => true,
     },
     auth: {
         verify: {

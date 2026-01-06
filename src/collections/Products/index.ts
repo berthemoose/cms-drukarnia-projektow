@@ -13,10 +13,10 @@ const Products: CollectionConfig = {
     /* TODO: Preview */
   },
   access: {
-    create: ({ req }) => req.user?.role === "admin",
-    read: ({ req }) => true,
-    update: ({ req }) => req.user?.role === "admin",
-    delete: ({ req }) => req.user?.role === "admin",
+    create: () => true,
+    read: () => true,
+    update: () => true,
+    delete: () => true,
   },
   versions: {
     drafts: true,

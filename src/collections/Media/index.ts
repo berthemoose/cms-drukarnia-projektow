@@ -8,10 +8,10 @@ export const Media: CollectionConfig = {
       "W tej kolekcji znajdują się wszystkie pliki medialne na stronie. Usuwanie bądź zmiany w plikach mogą spowodować bezpośrednie zmiany na żywej stronie",
   },
   access: {
-    create: ({ req }) => req.user?.role === "admin",
+    create: () => true,
     read: () => true,
-    update: ({ req }) => req.user?.role === "admin",
-    delete: ({ req }) => req.user?.role === "admin",
+    update: () => true,
+    delete: () => true,
   },
   upload: {
     staticURL: `${process.env.AZURE_STORAGE_ACCOUNT_BASEURL}/${process.env.AZURE_STORAGE_CONTAINER_NAME}`,

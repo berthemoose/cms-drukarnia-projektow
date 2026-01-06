@@ -11,7 +11,7 @@ export const DeliveryOptions: GlobalConfig = {
   },
   access: {
     read: () => true,
-    update: ({ req }) => req.user?.role === "admin",
+    update: () => true,
   },
   fields: [
     {

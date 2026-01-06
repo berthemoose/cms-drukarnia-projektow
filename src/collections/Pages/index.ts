@@ -10,10 +10,10 @@ export const Pages: CollectionConfig = {
     description: "Zakładka będzie czynna w przyszłości",
   },
   access: {
+    create: () => true,
     read: () => true,
-    create: ({ req }) => req.user?.role === "admin",
-    update: ({ req }) => req.user?.role === "admin",
-    delete: ({ req }) => req.user?.role === "admin",
+    update: () => true,
+    delete: () => true,
   },
   fields: [
     {

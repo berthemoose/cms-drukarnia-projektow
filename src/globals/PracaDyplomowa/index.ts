@@ -15,7 +15,7 @@ export const PracaDyplomowa: GlobalConfig = {
   },
   access: {
     read: () => true,
-    update: ({ req }) => req.user?.role === "admin",
+    update: () => true,
   },
   versions: {
     drafts: true,

@@ -13,10 +13,10 @@ const Users: CollectionConfig = {
     description: "Lista wszystkich administratorów strony",
   },
   access: {
-    create: ({ req }) => req.user?.role === "admin",
-    read: ({ req }) => true,
-    update: ({ req }) => req.user?.role === "admin",
-    delete: ({ req }) => req.user?.role === "admin",
+    create: () => true,
+    read: () => true,
+    update: () => true,
+    delete: () => true,
   },
   fields: [
     {
